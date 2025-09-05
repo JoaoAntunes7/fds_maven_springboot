@@ -10,4 +10,13 @@ class SpringbootApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	void testGetLivrosDoAutor() {
+		// Test the endpoint /livrosautor with a specific author
+	}
+
+	@Test
+	void testGetLivrosDoAutorEano() {
+		// Test the endpoint /livrosautorano/{autor}/ano/{ano} with a specific author and year
+	}
 }
