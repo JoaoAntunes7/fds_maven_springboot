@@ -28,6 +28,22 @@ public class Livro {
     public int getAno() {
         return ano;
     }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
+
+    public void setAno(int ano) {
+        this.ano = ano;
+    }
 
     @Override
     public String toString() {

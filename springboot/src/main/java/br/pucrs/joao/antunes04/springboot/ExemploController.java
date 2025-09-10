@@ -1,83 +1,77 @@
 package br.pucrs.joao.antunes04.springboot;
 
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestBody;
+import java.util.*;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 @RestController
 @RequestMapping("/biblioteca")
 public class ExemploController {
+    private Acervo acervo;
 
-    private List<Livro> livros;
-
-    public ExemploController() {
-        livros = new ArrayList<>();
-
-        livros.add(new Livro(110, "Aprendendo Java", "Maria da Silva", 2015));
-        livros.add(new Livro(120, "Spring-Boot", "Jose de Souza", 2020));
-        livros.add(new Livro(130, "Principios SOLID", "Pedro da Silva", 2023));
-        livros.add(new Livro(140, "Padroes de Projeto", "Joana Moura", 2023));
-        livros.add(new Livro(150, "Teste Unitario", "Pedro da Silva", 2024)); 
+    @Autowired
+    public ExemploController(Acervo acervo) {
+        this.acervo = acervo;        
     }
 
     @GetMapping("/")
-    public String getMensagemInicial(){
-        return "Aplicação Spring-Boot funcionando!";
+    public String getMensagemInicial() {
+        return "Aplicacao Spring-Boot funcionando!";
+    }
+    @GetMapping("")
+    public String getMensagemInicial2() {
+        return "Aplicacao Spring-Boot funcionando!";
     }
 
     @GetMapping("/livros")
-    public List<Livro> getLivros(){
-        return livros;
+    public List<Livro> getLivros() {
+        return acervo.getLivros();
     }
     
     @GetMapping("/titulos")
     public List<String> getTitulos() {
-        return livros.stream()
-               .map(livro->livro.getTitulo())
-               .toList();
+        return acervo.getTitulos();
     }
 
     @GetMapping("/autores")
     public List<String> getListaAutores() {
-        return livros.stream()
-                .map(l -> l.getAutor())
-                .distinct()
-                .toList();
-    }
-
-    @GetMapping("/mensagem")
-    public String getMensagem() {
-        return "Biblioteca central!";
+        return acervo.getListaAutores();
     }
 
     @GetMapping("/livrosautor")
     public List<Livro> getLivrosDoAutor(@RequestParam(value = "autor") String autor) {
-        return livros.stream()
-                .filter(livro -> livro.getAutor().equals(autor))
-                .toList();
+        return acervo.getLivrosDoAutor(autor);
     }
 
     @GetMapping("/livrosautorano/{autor}/ano/{ano}")
     public List<Livro> getLivrosDoAutor(@PathVariable(value="autor") String autor,
-                                        @PathVariable(value="ano") int ano){
-        return livros.stream()
-                .filter(livro -> livro.getAutor().equals(autor))
-                .filter(livro -> livro.getAno() == ano)
-                .toList();
-    }
-
-    @GetMapping("/novolivro")
-    public boolean cadastraLivroNovo(@RequestBody final Livro livro) {
-        livros.add(livro);
-        return true;
+                                        @PathVariable(value="ano")int ano) {
+        return acervo.getLivrosDoAutor(autor, ano);
     }
     
+    @PostMapping("/novolivro")
+    public boolean cadastraLivroNovo(@RequestBody final Livro livro) {
+        return acervo.cadastraLivroNovo(livro);
+    }
+
+    @GetMapping("/livrotitulo/{titulo}")
+    public ResponseEntity<Livro> getLivroTitulo(@PathVariable("titulo") String titulo) {
+        Livro livro = acervo.getLivroTitulo(titulo);
+        return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(livro);
+        }
+
+    @DeleteMapping("/removelivrosano/{ano}")
+    public boolean removeLivrosAno(@PathVariable("ano") int ano) {
+        return acervo.removeLivrosDoAno(ano);
+    }
+
+    @PutMapping("/atualizalivro")
+    public boolean atualizaLivro(@RequestBody final Livro livro) {
+        return acervo.atualizaLivro(livro);
+    }
+
 }
