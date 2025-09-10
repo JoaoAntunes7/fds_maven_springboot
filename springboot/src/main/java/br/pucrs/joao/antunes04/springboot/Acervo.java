@@ -61,30 +61,17 @@ public class Acervo {
             return resp;
         }
 
-    public boolean removeLivrosDoAno(int ano) {
+    public boolean removeLivrosAno(int ano) {
+        
         boolean removeu = false;
-        int index = 0;
-        while(index < livros.size()) {
-            Livro l = livros.get(index);
-            if(l.getAno() == ano) {
-                livros.remove(l);
+        int aux = 0;
+        for(;aux < livros.size();aux++) {
+            Livro livro = livros.get(aux);
+            if(livro.getAno() == ano) {
+                livros.remove(livro);
                 removeu = true;
             }
-            else
-                index++;
         }
         return removeu;
-        }
-
-    public boolean atualizaLivro(Livro livro) {
-        for(Livro l : livros)
-            if(l.getId() == livro.getId()) {
-                l.setTitulo(livro.getTitulo());
-                l.setAutor(livro.getAutor());
-                l.setAno(livro.getAno());
-                return true;
-            }
-       return false;
     }
-
 }

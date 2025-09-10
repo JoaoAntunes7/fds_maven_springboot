@@ -64,14 +64,10 @@ public class ExemploController {
                     .body(livro);
         }
 
-    @DeleteMapping("/removelivrosano/{ano}")
-    public boolean removeLivrosAno(@PathVariable("ano") int ano) {
-        return acervo.removeLivrosDoAno(ano);
+    @DeleteMapping("/livrosano/{ano}")
+    public boolean livrosAno(@PathVariable("ano") int ano) {
+        return acervo.removeLivrosAno(ano);
     }
 
-    @PutMapping("/atualizalivro")
-    public boolean atualizaLivro(@RequestBody final Livro livro) {
-        return acervo.atualizaLivro(livro);
-    }
 
 }
