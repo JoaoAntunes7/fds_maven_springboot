@@ -56,7 +56,7 @@ public class ExemploController {
         return acervo.cadastraLivroNovo(livro);
     }
 
-    @GetMapping("/livrotitulo/{titulo}")
+    @PostMapping("/livrotitulo/{titulo}")
     public ResponseEntity<Livro> getLivroTitulo(@PathVariable("titulo") String titulo) {
         Livro livro = acervo.getLivroTitulo(titulo);
         return ResponseEntity
